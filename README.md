@@ -1,4 +1,4 @@
-# 4no3 - Golang based 403 & 401 Bypass Methods Testing Tool
+# 4no3 - Golang based 403 & 401 Bypass Testing Tool
 
 4no3 is a golang based tool to help identify common 403 & 401 bypasses. Currently supports 4 bypass methods: headers, paths, methods, and encodings to analyze server responses and identify potential 403 bypasses.
 
