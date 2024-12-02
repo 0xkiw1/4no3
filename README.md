@@ -24,7 +24,12 @@ Usage of 4no3:
   -t float
         Request timeout in seconds (default 10)
 ```
+
 ## Example usage
 `./4no3 -h https://example.com -p /admin -b header,method -H "host:admin.example.com"`
 
 `./4no3 -h https://example.com -p /admin/console -n 5 -t 20 -H "Authorization:test" -H "Header:value"`
+
+## Version 1.0
+TODO:
+- add wordlist support for headers and their values
