@@ -9,6 +9,7 @@
 - **Encoding Bypass Testing**: Encodes parts of the path to test server behavior.
 
 ## Usage
+```
 Usage of 4no3:
   -H value
         Custom header in key:value format
@@ -22,7 +23,7 @@ Usage of 4no3:
         Full request path (starting with /) (default "/")
   -t float
         Request timeout in seconds (default 10)
-
+```
 ## Example usage
 `./4no3 -h https://example.com -p /admin -b header,method -H "host:admin.example.com"`
 
