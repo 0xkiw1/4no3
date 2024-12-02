@@ -33,3 +33,4 @@ Usage of 4no3:
 ## Version 1.0
 TODO:
 - add wordlist support for headers and their values
+- add wordlist support for custom path fuzzing
