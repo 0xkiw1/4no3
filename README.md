@@ -34,3 +34,4 @@ Usage of 4no3:
 TODO:
 - add wordlist support for headers and their values
 - add wordlist support for custom path fuzzing
+- add connection header fuzzing for reverse proxy based bypasses
