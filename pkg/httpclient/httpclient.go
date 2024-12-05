@@ -241,7 +241,13 @@ func (c *HttpClient) buildRawRequestBody(options ClientOptions) string {
 		rawRequest.WriteString(fmt.Sprintf("%s: %s\r\n", key, value))
 	}
 	rawRequest.WriteString(fmt.Sprintf("Host: %s\r\n", options.Host))
-	rawRequest.WriteString("Connection: close\r\n")
+
+	value, exists := options.Headers["Connection"]
+	if exists {
+		rawRequest.WriteString(fmt.Sprintf("Connection: %s\r\n", value))
+	} else {
+		rawRequest.WriteString("Connection: close\r\n")
+	}
 	rawRequest.WriteString("\r\n")
 
 	if options.Body != nil {

@@ -1,9 +1,10 @@
 # 4no3 - Golang based 403 & 401 Bypass Testing Tool
 
-4no3 is a golang based tool to help identify common 403 & 401 bypasses. Currently supports 4 bypass methods: headers, paths, methods, and encodings to analyze server responses and identify potential 403 bypasses.
+4no3 is a golang based tool to help identify common 403 & 401 bypasses. Currently supports 5 bypass methods: headers, connection header, paths, methods, and encodings to analyze server responses and identify potential 403 bypasses.
 
 ## Features
 - **Header Bypass Testing**: Sends headers with various ip addresses.
+- **Connection Header Bypass Testing**: Header bypass with headers being set to hop-by-hop via connection header for reverse proxy bypass.
 - **Path Bypass Testing**: Modifies URL paths to test different variations.
 - **Method Bypass Testing**: Uses various HTTP methods for request manipulation.
 - **Encoding Bypass Testing**: Encodes parts of the path to test server behavior.
@@ -14,7 +15,7 @@ Usage of 4no3:
   -H value
         Custom header in key:value format
   -b string
-        Comma-separated bypass methods (default "header,path,method,encode")
+        Comma-separated bypass methods (default "header,connection,path,method,encode")
   -h string
         Target host
   -n int
@@ -26,12 +27,11 @@ Usage of 4no3:
 ```
 
 ## Example usage
-`./4no3 -h https://example.com -p /admin -b header,method -H "host:admin.example.com"`
+`./4no3 -h https://example.com -p /admin -b header,method,connection -H "host:admin.example.com"`
 
 `./4no3 -h https://example.com -p /admin/console -n 5 -t 20 -H "Authorization:test" -H "Header:value"`
 
-## Version 1.0
+## Version 1.1
 TODO:
 - add wordlist support for headers and their values
 - add wordlist support for custom path fuzzing
-- add connection header fuzzing for reverse proxy based bypasses

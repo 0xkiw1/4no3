@@ -9,7 +9,7 @@ import (
 	"4no3/pkg/util"
 )
 
-func applyIPHeader(httpClient *httpclient.HttpClient, header string, ip string, sem chan struct{}) {
+func applyIPHeader(httpClient *httpclient.HttpClient, header string, ip string, sem chan struct{}, connection bool) {
 	defer func() { <-sem }()
 
 	baseOptions := httpClient.GetOptions()
@@ -25,17 +25,26 @@ func applyIPHeader(httpClient *httpclient.HttpClient, header string, ip string, 
 	}
 	customOptions.Headers[header] = ip
 
+	if connection {
+		customOptions.Headers["Connection"] = fmt.Sprintf("close, %s", header)
+	}
+
 	response, err := httpClient.Do(customOptions)
 	if err != nil {
-		log.Printf("Request failed for header %s with IP %s: %v", header, ip, err)
+		log.Printf("Request failed for header %s (connection header set) with IP %s: %v", header, ip, err)
+		return
 	} else {
 		defer response.Body.Close()
 	}
 
-	util.LogResponseDetails(fmt.Sprintf("Header: %s: %s", header, ip), response)
+	if connection {
+		util.LogResponseDetails(fmt.Sprintf("Header (connection): %s: %s", header, ip), response)
+	} else {
+		util.LogResponseDetails(fmt.Sprintf("Header: %s: %s", header, ip), response)
+	}
 }
 
-func applyPathHeader(httpClient *httpclient.HttpClient, header string, sem chan struct{}) {
+func applyPathHeader(httpClient *httpclient.HttpClient, header string, sem chan struct{}, connection bool) {
 	defer func() { <-sem }()
 
 	baseOptions := httpClient.GetOptions()
@@ -51,14 +60,22 @@ func applyPathHeader(httpClient *httpclient.HttpClient, header string, sem chan 
 	}
 	customOptions.Headers[header] = baseOptions.Path
 
+	if connection {
+		customOptions.Headers["Connection"] = fmt.Sprintf("close, %s", header)
+	}
+
 	response, err := httpClient.Do(customOptions)
 	if err != nil {
-		log.Printf("Request failed for header %s: %v", header, err)
+		log.Printf("Request failed for header (connection header set) %s: %v", header, err)
 		return
 	}
 	defer response.Body.Close()
 
-	util.LogResponseDetails(fmt.Sprintf("Header: %s: %s, Path: %s,", header, baseOptions.Path, "/"), response)
+	if connection {
+		util.LogResponseDetails(fmt.Sprintf("Header (connection): %s: %s, Path: %s,", header, baseOptions.Path, "/"), response)
+	} else {
+		util.LogResponseDetails(fmt.Sprintf("Header: %s: %s, Path: %s,", header, baseOptions.Path, "/"), response)
+	}
 }
 
 func copyHeaders(headers map[string]string) map[string]string {
@@ -69,7 +86,7 @@ func copyHeaders(headers map[string]string) map[string]string {
 	return newHeaders
 }
 
-func Fuzz(httpClient *httpclient.HttpClient) {
+func Fuzz(httpClient *httpclient.HttpClient, connection bool) {
 	var wg sync.WaitGroup
 
 	originalOptions := httpClient.GetOptions()
@@ -85,7 +102,7 @@ func Fuzz(httpClient *httpclient.HttpClient) {
 			sem <- struct{}{}
 			go func(header, ip string) {
 				defer wg.Done()
-				applyIPHeader(httpClient, header, ip, sem)
+				applyIPHeader(httpClient, header, ip, sem, connection)
 			}(header, ip)
 		}
 	}
@@ -95,7 +112,7 @@ func Fuzz(httpClient *httpclient.HttpClient) {
 		sem <- struct{}{}
 		go func(header string) {
 			defer wg.Done()
-			applyPathHeader(httpClient, header, sem)
+			applyPathHeader(httpClient, header, sem, connection)
 		}(header)
 	}
 

@@ -36,7 +36,7 @@ func (h headerFlag) Set(value string) error {
 func ParseFlags() Options {
 	host := flag.String("h", "", "Target host")
 	path := flag.String("p", "/", "Full request path (starting with /)")
-	bypassMethods := flag.String("b", "header,path,method,encode", "Comma-separated bypass methods")
+	bypassMethods := flag.String("b", "header,connection,path,method,encode", "Comma-separated bypass methods")
 	timeout := flag.Float64("t", 10, "Request timeout in seconds")
 	threads := flag.Int("n", 20, "Number of threads")
 

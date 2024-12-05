@@ -30,7 +30,9 @@ func main() {
 		case "encode":
 			encode.Fuzz(httpClient)
 		case "header":
-			header.Fuzz(httpClient)
+			header.Fuzz(httpClient, false)
+		case "connection":
+			header.Fuzz(httpClient, true)
 		}
 	}
 }
