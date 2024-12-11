@@ -31,7 +31,7 @@ Usage of 4no3:
 
 `./4no3 -h https://example.com -p /admin/console -n 5 -t 20 -H "Authorization:test" -H "Header:value"`
 
-## Version 1.1
+## Version 1.2
 TODO:
 - add wordlist support for headers and their values
 - add wordlist support for custom path fuzzing
