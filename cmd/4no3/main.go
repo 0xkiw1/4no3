@@ -46,15 +46,25 @@ func main() {
 			if err := scanner.Err(); err != nil {
 				log.Fatalf("Error reading path wordlist: %v", err)
 			}
+			util.PrintBypassName("Path bypass")
 			path.Fuzz(httpClient, wordlist)
+			util.PrintBypassDelimeter()
 		case "method":
+			util.PrintBypassName("HTTP Method bypass")
 			method.Fuzz(httpClient)
+			util.PrintBypassDelimeter()
 		case "encode":
+			util.PrintBypassName("Path encoding bypass")
 			encode.Fuzz(httpClient)
+			util.PrintBypassDelimeter()
 		case "header":
+			util.PrintBypassName("Header bypass")
 			header.Fuzz(httpClient, false)
+			util.PrintBypassDelimeter()
 		case "connection":
+			util.PrintBypassName("Connection header bypass")
 			header.Fuzz(httpClient, true)
+			util.PrintBypassDelimeter()
 		}
 	}
 }

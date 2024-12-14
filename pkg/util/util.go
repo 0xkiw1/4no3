@@ -22,6 +22,20 @@ func PrintASCIIArt() {
 	fmt.Println(asciiArt)
 }
 
+func PrintBypassName(text string) {
+	colorBlue := "\033[34m"
+	resetColor := "\033[0m"
+	message := colorBlue + text + resetColor
+	fmt.Println(message)
+	fmt.Print("\n")
+}
+
+func PrintBypassDelimeter() {
+	fmt.Print("\n")
+	fmt.Println("----------------------------------------------------------")
+	fmt.Print("\n")
+}
+
 func colorizeStatusCode(statusCode int) string {
 	color := ""
 	reset := "\033[0m"

@@ -34,9 +34,12 @@ Usage of 4no3:
 `./4no3 -h https://example.com -p /admin/console -n 5 -t 20 -H "Authorization:test" -H "Header:value" -pw ~/wordlists/paths.txt`
 
 ## Path wordlist format
+```
 $1 - full path except for the last dir (/api/test/admin) -> $1 = /api/test
 $2 - last dir only (/api/test/admin) -> $2 = admin
+
 Please refer to wordlists/paths.txt for examples
+```
 
 ## Version 1.3
 TODO:
