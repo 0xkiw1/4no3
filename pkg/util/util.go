@@ -59,6 +59,8 @@ func LogResponseDetails(info string, response *http.Response) {
 }
 
 func SplitDir(path string) (string, string) {
+	path = strings.TrimSuffix(path, "/")
+
 	if !strings.Contains(path, "/") {
 		return path, ""
 	}

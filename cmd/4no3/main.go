@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"log"
+	"os"
 
 	"4no3/pkg/encode"
 	"4no3/pkg/header"
@@ -19,12 +21,32 @@ func init() {
 func main() {
 	util.PrintASCIIArt()
 	options := options.ParseFlags()
+
+	for _, bypass := range options.BypassMethods {
+		if bypass == "path" && options.PathWordlist == "" {
+			log.Fatalf("Error: Path fuzzing method selected but no path wordlist (-pw) specified.")
+		}
+	}
+
 	httpClient := httpclient.NewHttpClient(&options)
 
 	for _, bypass := range options.BypassMethods {
 		switch bypass {
 		case "path":
-			path.Fuzz(httpClient)
+			var wordlist []string
+			file, err := os.Open(options.PathWordlist)
+			if err != nil {
+				log.Fatalf("Failed to open path wordlist: %v", err)
+			}
+			defer file.Close()
+			scanner := bufio.NewScanner(file)
+			for scanner.Scan() {
+				wordlist = append(wordlist, scanner.Text())
+			}
+			if err := scanner.Err(); err != nil {
+				log.Fatalf("Error reading path wordlist: %v", err)
+			}
+			path.Fuzz(httpClient, wordlist)
 		case "method":
 			method.Fuzz(httpClient)
 		case "encode":

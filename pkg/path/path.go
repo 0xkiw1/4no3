@@ -37,7 +37,7 @@ func applyPathModification(httpClient *httpclient.HttpClient, pathTemplate strin
 	util.LogResponseDetails(fmt.Sprintf("Path: %s", modifiedPath), response)
 }
 
-func Fuzz(httpClient *httpclient.HttpClient) {
+func Fuzz(httpClient *httpclient.HttpClient, wordlist []string) {
 	var wg sync.WaitGroup
 
 	originalOptions := httpClient.GetOptions()
@@ -50,7 +50,7 @@ func Fuzz(httpClient *httpclient.HttpClient) {
 
 	dir1, dir2 := util.SplitDir(originalOptions.Path)
 
-	for _, pathTemplate := range paths {
+	for _, pathTemplate := range wordlist {
 		wg.Add(1)
 		sem <- struct{}{}
 		go func(pathTemplate string) {

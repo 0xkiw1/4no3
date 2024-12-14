@@ -8,6 +8,7 @@ import (
 type Options struct {
 	Host          string
 	Path          string
+	PathWordlist  string
 	BypassMethods []string
 	Headers       map[string]string
 	Timeout       float64
@@ -36,6 +37,7 @@ func (h headerFlag) Set(value string) error {
 func ParseFlags() Options {
 	host := flag.String("h", "", "Target host")
 	path := flag.String("p", "/", "Full request path (starting with /)")
+	pathWordlist := flag.String("pw", "", "Path to the wordlist for path fuzzing")
 	bypassMethods := flag.String("b", "header,connection,path,method,encode", "Comma-separated bypass methods")
 	timeout := flag.Float64("t", 10, "Request timeout in seconds")
 	threads := flag.Int("n", 20, "Number of threads")
@@ -50,6 +52,7 @@ func ParseFlags() Options {
 	return Options{
 		Host:          *host,
 		Path:          *path,
+		PathWordlist:  *pathWordlist,
 		BypassMethods: selectedMethods,
 		Headers:       headers,
 		Timeout:       *timeout,
